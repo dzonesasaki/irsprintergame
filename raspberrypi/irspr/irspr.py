@@ -27,6 +27,7 @@ gbRaceStarted = False
 guiTimeStart = 0
 gbTitleBGMstarted = False
 guiStartCountdown = 0
+gbIsJpFont = True
 
 JP_FONT = ''
 
@@ -46,6 +47,8 @@ if (platform.system()=='Darwin'):
 
 if os.path.exists(JP_FONT) == False:
 	JP_FONT = None
+	gbIsJpFont = False
+
 
 VAL_ACCELERATION_ONE_ACTION = (5)
 
@@ -189,7 +192,7 @@ class SomeImgClass(pygame.sprite.Sprite):
 		self.x = x
 		self.y = y
 
-	def update(self,x,y):
+	def update(self,x=0,y=0):
 		self.x = x
 		self.y = y
 		myscreen.blit(self.image,[self.x,self.y])
@@ -447,13 +450,20 @@ backGroundNear1 = BackGroundNear1Class(0,int(HEIGHT/2))
 backGroundFar1 = BackGroundFar1Class(0,int(HEIGHT/8))
 timeMeasure = TimeMeasureClass()
 mytitle = TitleImageClass(0,0)
+myTitleBg = SomeImgClass('startLineYabaseTrackLight.jpg')
 mySubtitle = TextLineClass(JP_FONT )
 #myCountdownTxt = TextLineClass(fontSize=240)
 myCountdownTxt = TextLineClass(fontSize=120)
+myTitleTxt = TextLineClass(fontSize=140)
 myTheResult = TextLineClass(fontSize=100)
 myMessage = TextLineClass(fontSize=40)
 #myQrCode = SomeCharClass('qrsprint.png')
 myQrCode = SomeImgClass('qrsprint.png')
+myInstjp01 = SomeImgClass('instjp01.png')
+myInstjp02 = SomeImgClass('instjp02.png')
+myInstjp03 = SomeImgClass('instjp03.png')
+myInstjp04 = SomeImgClass('instjp04.png')
+myInstjp05 = SomeImgClass('instjp05.png')
 
 
 #myAllSprites.add(backGround)
@@ -467,6 +477,8 @@ myLoopCounter=0
 guiLpCntInst =0
 guiLpCntEachState = 0
 gGloalTime=10*1000
+
+myTupleTitleColor = ((0,0,64),(255,255,255),(255,255,0))
 
 running = True
 while running:
@@ -501,9 +513,50 @@ while running:
 	# ----------------------------------------------------------
 	# title
 	if guiStateNumber==0: 
-		mytitle.update( int(myLoopCounter/8)%3 )
+		#mytitle.update( int(myLoopCounter/8)%3 )
+		myTitleBg.update()
 
-		#myQrCode.update(10,HEIGHT/2)
+		myTitleTxt.RgbColorText = (8,0,64)
+		myTitleTxt.strDisp=u'Lightning'
+		myTitleTxt.posX = 20-5
+		myTitleTxt.posY = 20-5
+		myTitleTxt.draw()
+
+		myTitleTxt.RgbColorText = (8,0,64)
+		myTitleTxt.strDisp=u'Sprinter'
+		myTitleTxt.posX = 200-5
+		myTitleTxt.posY = 120-5
+		myTitleTxt.draw()
+
+		myTitleTxt.RgbColorText = (myTupleTitleColor[int(myLoopCounter/8)%3])
+		myTitleTxt.strDisp=u'Lightning'
+		myTitleTxt.posX = 20
+		myTitleTxt.posY = 20
+		myTitleTxt.draw()
+
+		myTitleTxt.RgbColorText = (myTupleTitleColor[int(myLoopCounter/8)%3])
+		myTitleTxt.strDisp=u'Sprinter'
+		myTitleTxt.posX = 200
+		myTitleTxt.posY = 120
+		myTitleTxt.draw()
+
+		myMessage.RgbColorText = (0,0,0)
+		myMessage.strDisp=u'infra-red sensor based'
+		myMessage.posX = 80
+		myMessage.posY = 270
+		myMessage.draw()
+
+		myMessage.RgbColorText = (0,0,0)
+		myMessage.strDisp=u'Dash Game'
+		myMessage.posX = 360
+		myMessage.posY = 350
+		myMessage.draw()
+
+		myMessage.RgbColorText = (0,0,0)
+		myMessage.strDisp=u'push start'
+		myMessage.posX = 300
+		myMessage.posY = 500
+		myMessage.draw()
 
 		pygame.display.flip()
 		gbRaceStarted = False
@@ -524,35 +577,48 @@ while running:
 
 		if (guiLpCntInst < (30*4)):
 			instHum.update(int(guiLpCntInst/16)%4)
-			mySubtitle.strDisp=u'あしぶみ で ゲームします'
-			mySubtitle.posX = 10
-			mySubtitle.posY = 10
-			mySubtitle.draw()
+			if (gbIsJpFont==True):
+				mySubtitle.strDisp=u'あしぶみ で ゲームします'
+				mySubtitle.posX = 10
+				mySubtitle.posY = 10
+				mySubtitle.draw()
+			else:
+				myInstjp01.update(10,10)
 
 		if (guiLpCntInst > (30*4))and(guiLpCntInst < (30*10)):
 			instHum.update(int(guiLpCntInst/16)%4+4)
-			mySubtitle.strDisp=u'あしを たかく あげましょう'
-			mySubtitle.posX = 10
-			mySubtitle.posY = 10
-			mySubtitle.draw()
-			mySubtitle.strDisp=u'みえない ひかり で けんしゅつします'
-			mySubtitle.posX = 10
-			mySubtitle.posY = 80
-			mySubtitle.draw()
+			if (gbIsJpFont==True):
+				mySubtitle.strDisp=u'あしを たかく あげましょう'
+				mySubtitle.posX = 10
+				mySubtitle.posY = 10
+				mySubtitle.draw()
+				mySubtitle.strDisp=u'みえない ひかり で けんしゅつします'
+				mySubtitle.posX = 10
+				mySubtitle.posY = 80
+				mySubtitle.draw()
+			else:
+				myInstjp02.update(10,10)
+				myInstjp03.update(10,70)
 
 		if (guiLpCntInst > (30*10))and(guiLpCntInst < (30*14)):
 			instHum.update(8)
-			mySubtitle.strDisp=u'テープのうえにあしをおいて'
-			mySubtitle.posX = 10
-			mySubtitle.posY = 10
-			mySubtitle.draw()
+			if (gbIsJpFont==True):
+				mySubtitle.strDisp=u'テープのうえにあしをおいて'
+				mySubtitle.posX = 10
+				mySubtitle.posY = 10
+				mySubtitle.draw()
+			else:
+				myInstjp04.update(10,10)
 
 		if (guiLpCntInst > (30*14)):
 			instHum.update(guiLpCntInst%8)
-			mySubtitle.strDisp=u'はやく あしぶみ しましょう！'
-			mySubtitle.posX = 20
-			mySubtitle.posY = 20
-			mySubtitle.draw()
+			if (gbIsJpFont==True):
+				mySubtitle.strDisp=u'はやく あしぶみ しましょう！'
+				mySubtitle.posX = 20
+				mySubtitle.posY = 20
+				mySubtitle.draw()
+			else:
+				myInstjp05.update(10,10)
 
 		if (guiLpCntInst > (30*20)):
 			guiLpCntInst =0
@@ -892,3 +958,4 @@ if gFlagRaspi :
 	GPIO.remove_event_detect(NUM_PIN_SELECT)
 	GPIO.cleanup()
 pygame.quit()
+
